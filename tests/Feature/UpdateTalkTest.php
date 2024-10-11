@@ -39,6 +39,11 @@ test('a user cannot update a talk of another user', function () {
 
     $response = $this
         ->actingAs($otherUser)
+        ->get(route('talks.edit', $talk))
+        ->assertForbidden();
+
+    $response = $this
+        ->actingAs($otherUser)
         ->get(route('talks.update', $talk))
         ->assertForbidden();
 

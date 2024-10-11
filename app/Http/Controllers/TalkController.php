@@ -56,10 +56,6 @@ class TalkController extends Controller
      */
     public function show(Talk $talk)
     {
-        if (Auth::user()->cannot('view', $talk)) {
-            abort(403);
-        }
-
         return view('talks.show', [
             'talk' => $talk,
         ]);
@@ -71,10 +67,6 @@ class TalkController extends Controller
     public function edit(Talk $talk)
     {
         // check if the user is the owner of the talk
-        if (Auth::user()->cannot('update', $talk)) {
-            abort(403);
-        }
-
         return view('talks.edit', [
             'talk' => $talk,
         ]);
@@ -85,12 +77,6 @@ class TalkController extends Controller
      */
     public function update(Request $request, Talk $talk)
     {
-
-        // check if the user is the owner of the talk
-
-        if (Auth::user()->cannot('update', $talk)) {
-            abort(403);
-        }
 
         $validated = $request->validate([
             'title' => 'required|max:255',
@@ -112,12 +98,6 @@ class TalkController extends Controller
      */
     public function destroy(Talk $talk)
     {
-        // check if the user is the owner of the talk
-        if (Auth::user()->id !== $talk->user_id) {
-            abort(403);
-        }
-
-        // delete the talk
         $talk->delete();
 
         return redirect()->route('talks.index');
